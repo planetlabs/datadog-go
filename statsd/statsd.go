@@ -285,8 +285,8 @@ func (c *Client) Set(name string, value string, tags []string, rate float64) err
 }
 
 // Timing sends timing information, it is an alias for TimeInMilliseconds
-func (c *Client) Timing(name string, value float64, tags []string, rate float64) error {
-	return c.TimeInMilliseconds(name, value, tags, rate)
+func (c *Client) Timing(name string, value time.Duration, tags []string, rate float64) error {
+	return c.TimeInMilliseconds(name, float64(value.Nanoseconds())/float64(time.Millisecond), tags, rate)
 }
 
 // TimeInMilliseconds sends timing information in milliseconds.

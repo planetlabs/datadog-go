@@ -9,6 +9,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"time"
 )
 
 var dogstatsdTests = []struct {
@@ -115,12 +116,14 @@ func TestBufferedClient(t *testing.T) {
 	client.Namespace = "foo."
 	client.Tags = []string{"dd:2"}
 
+	dur, _ := time.ParseDuration("123us")
+
 	client.Incr("ic", nil, 1)
 	client.Decr("dc", nil, 1)
 	client.Count("cc", 1, nil, 1)
 	client.Gauge("gg", 10, nil, 1)
 	client.Histogram("hh", 1, nil, 1)
-	client.Timing("tt", 123.0, nil, 1)
+	client.Timing("tt", dur, nil, 1)
 	client.Set("ss", "ss", nil, 1)
 
 	if len(client.commands) != 7 {
@@ -151,7 +154,7 @@ func TestBufferedClient(t *testing.T) {
 		`foo.cc:1|c|#dd:2`,
 		`foo.gg:10.000000|g|#dd:2`,
 		`foo.hh:1.000000|h|#dd:2`,
-		`foo.tt:123.000000|ms|#dd:2`,
+		`foo.tt:0.123000|ms|#dd:2`,
 		`foo.ss:ss|s|#dd:2`,
 		`foo.ss:xx|s|#dd:2`,
 	}

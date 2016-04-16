@@ -22,7 +22,7 @@ c.Tags = append(c.Tags, "us-east-1a")
 
 // Do some metrics!
 err = c.Gauge("request.queue_depth", 12, nil, 1)
-err = c.Timing("request.duration", 1.2, nil, 1)
+err = c.Timing("request.duration", duration, nil, 1) // Uses a time.Duration!
 err = c.TimeInMilliseconds("request", 12, nil, 1)
 err = c.Incr("request.count_total", nil, 1)
 err = c.Decr("request.count_total", nil, 1)
